@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\MessageController;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('v1')->middleware(['throttle:20,1'])->group(function () {
+    Route::apiResource('messages', MessageController::class)->only(['store']);
+    Route::get('check-health', function () {
+        return response()->json(['data' => ['message' => 'Service is working properly.'], 'server_time' => Carbon::now()]);
+    });
 });
