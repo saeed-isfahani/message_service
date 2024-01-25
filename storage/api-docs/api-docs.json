@@ -1,0 +1,70 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "MessageSvc doc",
+        "description": "MessageSvc doc",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/": {},
+        "/api/v1/messages": {
+            "post": {
+                "tags": [
+                    "Save message"
+                ],
+                "summary": "Save message",
+                "description": "Save message after checking user token",
+                "operationId": "saveMessage",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "message"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "text"
+                                    },
+                                    "message": {
+                                        "type": "text"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation (message saved)"
+                    },
+                    "400": {
+                        "description": "Bad Request (token is not valid)"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Save message with title and message and with token from AuthSvc",
+                "name": "Token based Based",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
